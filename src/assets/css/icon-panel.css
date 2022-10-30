@@ -1,0 +1,21 @@
+.li {
+    list-style: none;
+}
+
+.img {
+    width: 100%;
+}
+
+.a {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.li:hover {
+    filter: brightness(0.9);
+}
+
+.ul {
+    max-width: 35px;
+    padding: 0;
+}
