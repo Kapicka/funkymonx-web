@@ -3,8 +3,7 @@
     <gallery :img-index="imgIndex" @close="()=>{this.gallery=false}" v-if="gallery" :images="loadedImgs"/>
     <div class="photo_list">
       <img class="gallery__img" v-bind:key="img.alt+i" v-for="(img,i) in loadedImgs" @click="openGallery(i)" loading="lazy"
-           :srcset="img.srcSet"
-           :src="loadedImgs.src"/>
+           :srcset="img.srcSet" />
     </div>
   </section>
 </template>
