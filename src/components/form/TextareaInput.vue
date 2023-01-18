@@ -52,6 +52,7 @@ export default {
 }
 
 .textarea {
+  -webkit-appearance: textfield;
   font-family: RobotoMono-Medium;
   overflow: hidden;
   font-size: 20px;
