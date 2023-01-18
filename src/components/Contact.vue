@@ -1,24 +1,6 @@
 <template>
-  <div>
-    <modal v-if="messageState === 'after-message-sent'">
-    <div class="dialogue">
-        <h3>Zpráva odeslána!</h3>
-        <div class="mt30">Co nejdříve se vám ozveme!</div>
-        <mx-button class="button-md">Ok</mx-button>
-      </div>
-    </modal>
-    <modal v-if="messageState === 'error'">
-      <div class="dialogue">
-        <p class="modal-title">Ajaj!</p>
-        <p>Něco se při odesílání pokazilo, ale neva. Zavolejte nám nebo napište a domluvíme se ;)</p>
-        <address>
-          <a class="mt5" href="tel:720999999">720 999 999</a><br>
-          <a class="mt5" href="mailto:info@funkymonx.cz">info@funkymonx.cz</a>
-        </address>
-        <mx-button class="button-md">Ok</mx-button>
-      </div>
-    </modal>
-    <div class="contact fade-in">
+  <div class="contact fade-in">
+    <div>
       <address class="contact__address">
         <div>
           <div class="contact__address-item">
@@ -34,30 +16,63 @@
 
       <h3 class="mt100 mt50-mobile">Napište zprávu</h3>
       <form class="contact__message-form">
-        <label class="contact__message-label" for="contact">E-mail / telefon</label>
-        <input class="text-input mt15" ref="contact" v-model="contact"
-               type="text" name="contact"/>
-        <label class="contact__message-label mt30" for="message">Vaše zpráva</label>
-        <textarea ref="textarea" @input="(event)=>resizeTextArea(event)"
-                  v-model="message" class="text-input textarea mt15"
-                  name="message"/>
-        <div class="checkout__submit-container mt30">
-          <mx-button @click="sendOrder()" aria-disabled="true">Odeslat</mx-button>
+        <!--        <label class="contact__message-label" for="contact">E-mail / telefon</label>-->
+        <div class="contact--short">
+          <text-input placeholder="E-mail / telefon"
+                      @input="(input)=>{this.contact = input}"
+                      :model="contact" class="mt15" ref="contact contact--short"
+                      type="text"
+                      name="contact"/>
+        </div>
+        <div class="mt30">
+          <textarea-input placeholder="Vaše zpráva" class="mt50" ref="textarea"
+                          @input="(input)=>{this.message = input}"
+                          :model="message" name="message"/>
         </div>
       </form>
+      <div class="mt50">
+        <mx-button  @click="sendMessage">Odeslat</mx-button>
+      </div>
     </div>
+    <!--    Modals-->
+    <modal v-if="messageState === 'after-message-sent'" :close-button="false">
+      <div class="contact__message-status-dialogue">
+        <h3>Zpráva odeslána!</h3>
+        <div class="mt30">Co nejdříve se vám ozveme!</div>
+        <mx-button @click="closeDialogue" class="button-md mt30">Ok</mx-button>
+      </div>
+    </modal>
+    <modal v-if="messageState === 'error'" :close-button="false" @close="closeDialogue">
+      <div class="contact__message-status-dialogue">
+        <p class="modal-title">Ajaj!</p>
+        <p>Něco se při odesílání pokazilo. <br> Zavolejte nám nebo napište a domluvíme se ;)</p>
+        <address>
+          <a class="mt5" :href="`tel:${monxContact.phone}`">{{ monxContact.phone }}</a><br>
+          <a class="mt5" :href="`mailto:${monxContact.mail}}`">{{ monxContact.mail }}</a>
+        </address>
+        <mx-button @click="closeDialogue" class="button-md mt30">Ok</mx-button>
+      </div>
+    </modal>
   </div>
 </template>
 
 <script>
-import emailjs from "@emailjs/browser";
-import MxButton from "@/components/MxButton";
+import MxButton from "@/components/buttons/MxButton";
+import emailjs from '@emailjs/browser';
 import {monxContact} from '../data/store'
 import Modal from "@/components/Modal";
+import TextInput from "@/components/form/TextInput";
+import TextareaInput from "@/components/form/TextareaInput";
+import {emailjsConfig} from "@/data/emailjs";
 
 export default {
   name: "Contact",
+  metaInfo: {
+    title: 'Kontakt | Funky Monx'
+  },
   components: {
+    TextareaInput,
+    TextInput,
     Modal,
     MxButton
   },
@@ -66,25 +81,31 @@ export default {
       messageState: 'before-message-sent',
       message: '',
       contact: '',
-      monxContact
+      monxContact,
     }
   },
   methods: {
-    resizeTextArea(event) {
-      const textarea = event.target
-      textarea.style.height = ''
-      textarea.style.height = textarea.scrollHeight + 'px'
+    validateForm() {
+      console.log(!this.message.length || !this.contact.length)
+      return !this.message.length || !this.contact.length
     },
-    sendOrder() {
-      emailjs.send('service_fmbevz5', 'template_2jdc37d',
-          {contact: this.contact, message: this.message}
-          , 'pDFIOzS1I02OcfVwO')
+    closeDialogue() {
+      this.messageState = 'before-message-sent'
+    },
+
+    sendMessage() {
+      const message = 'Zpráva:<br><br>' + this.message.replaceAll('\n', '<br>')
+      const subject = `Zpráva od: ${this.contact}`
+      emailjs.send(
+          emailjsConfig.serviceId,
+          emailjsConfig.templatesIds.generic,
+          {subject, row1: message},
+          emailjsConfig.publicKey)
           .then(() => {
-            this.messageState = 'after-message-send'
+            this.messageState = 'after-message-sent'
           }).catch((err) => {
         this.messageState = 'error'
         console.error(err)
-        this.errorDialogue = true
       })
     },
   }
@@ -92,37 +113,14 @@ export default {
 </script>
 
 <style scoped>
-.contact__message-label {
-  font-size: 16px;
-  display: block;
-}
 
-.text-input {
-  font-family: RobotoMono-Medium;
-  border: none;
-  border-bottom: 1px solid white;
-  background-color: rgba(0, 0, 0, 0);
-  text-align: center;
+.contact {
+  max-width: 500px;
   width: 100%;
-  padding: 0 10px 10px;
-  color: white;
-  font-size: 20px;
-  vertical-align: baseline;
-}
-
-.a {
-  display: block;
-}
-
-.text-input:focus {
-  outline: none !important;
-  border-bottom: 2px solid #ffbf00;
 }
 
 .contact__address {
   width: 100%;
-  display: flex;
-  justify-content: center;
   text-align: left;
 }
 
@@ -131,24 +129,17 @@ export default {
   justify-content: center;
 }
 
-.textarea {
-  font-family: RobotoMono-Medium;
-  overflow: hidden;
-  margin-top: 10px;
-  resize: none;
-  background: inherit;
-  box-sizing: border-box;
-  height: 34px;
-}
 
-.dialogue {
+.contact__message-status-dialogue {
+  margin-top: 15px;
   padding: 5px 40px 40px;
 }
 
-.text-input:hover {
-  outline: none !important;
-  border-bottom: 2px solid #ffbf00;
+.contact--short {
+  padding-right: 90px;
+  padding-left: 90px;
 }
+
 
 @media (max-width: 700px) {
   .mt50-mobile {
@@ -156,9 +147,9 @@ export default {
   }
 
   .contact__message-form {
+    display: flex;
+    justify-items: center;
     text-align: center;
-    display: block;
   }
 }
-
 </style>

@@ -9,7 +9,11 @@
 
 <script>
 export default {
-  name: "Bio"
+  name: "Bio",
+  metaInfo: {
+    title: 'Bio | Funky Monx',
+    titleTemplate: null
+  }
 }
 </script>
 

@@ -4,7 +4,7 @@
       <!--  Adding items     -->
       <div v-if="isState('adding')">
         <h2>{{ item.name }}</h2>
-        <div class="img-container">
+        <div class="checkout__image-wrapper">
           <img :src="getMerch(item.imageName)"/>
         </div>
         <div class="checkout__info">
@@ -15,15 +15,21 @@
           </div>
           <div>{{ item.price * qt }} Kč</div>
         </div>
-        <form class="checkout_form mt30">
-          <label class="label" for="contact">E-mail / telefon</label>
-          <input v-model="contact" class="text-input mt15" name="contact" type="text"/>
-          <label class="label mt30" for="note">Poznámka: </label>
-          <textarea @input="(event)=>resizeTextArea(event)" ref="textarea" v-model="note"
-                    class="textarea text-input mt15" name="note" type="text"/>
+        <form class="checkout__form mt30">
+          <text-input
+              class="mt15"
+              :model="contact"
+              @input="(input)=>{this.contact=input}" name="contact"
+              placeholder="E-mail / telefon"/>
+          <div class="mt30">
+            <textarea-input
+                @input="(input)=>{this.note=input}"
+                ref="textarea"
+                model="note" class="mt30" placeholder="Poznámka" name="note" type="text"/>
+          </div>
         </form>
         <div class="checkout__submit-container mt30">
-          <mx-button @click="sendOrder()" aria-disabled="true">Objednat</mx-button>
+          <mx-button @click="sendOrder()">Objednat</mx-button>
         </div>
       </div>
       <!--  Success     -->
@@ -47,13 +53,16 @@
 </template>
 
 <script>
-import MxButton from "@/components/MxButton";
+import MxButton from "@/components/buttons/MxButton";
 import emailjs from '@emailjs/browser';
 import {monxContact} from "@/data/store";
+import TextInput from "@/components/form/TextInput";
+import TextareaInput from "@/components/form/TextareaInput";
+import {emailjsConfig} from "@/data/emailjs";
 
 export default {
   name: "Checkout",
-  components: {MxButton},
+  components: {TextareaInput, TextInput, MxButton},
   props: {item: Object},
   methods: {
     resizeTextArea(event) {
@@ -65,15 +74,16 @@ export default {
       return this.state === state
     },
     sendOrder() {
-      emailjs.send('service_fmbevz5', 'template_2jdc37d',
-          {contact: this.contact, qt: this.qt, 'item_name': this.item.name, note: this.note}
-          , 'pDFIOzS1I02OcfVwO')
+      emailjs.send(
+          emailjsConfig.serviceId,
+          emailjsConfig.templatesIds.order,
+          {contact: this.contact, qt: this.qt, 'item_name': this.item.name, note: this.note},
+           emailjsConfig.publicKey)
           .then(() => {
             this.state = 'order-completed'
           }).catch((err) => {
         this.state = 'error'
         console.error(err)
-        this.errorDialogue = true
       })
     },
     incrementQt() {
@@ -138,45 +148,11 @@ img {
   display: block;
 }
 
-.text-input {
-  font-family: RobotoMono-Medium;
-  border: none;
-  border-bottom: 1px solid white;
-  background-color: rgba(0, 0, 0, 0);
-  text-align: center;
-  width: 100%;
-  padding: 0 10px 10px;
-  color: white;
-  font-size: 20px;
-  vertical-align: baseline;
-}
-
-.text-input:focus {
-  outline: none !important;
-  border-bottom: 2px solid #ffbf00;
-}
-
-.text-input:hover {
-  outline: none !important;
-  border-bottom: 2px solid #ffbf00;
-}
-
-.textarea {
-  font-family: RobotoMono-Medium;
-  overflow: hidden;
-  margin-top: 10px;
-  resize: none;
-  background: inherit;
-  box-sizing: border-box;
-  height: 34px;
-}
-
 .modal-title {
   font-size: 22px;
 }
 
-
-.img-container {
+.checkout__image-wrapper {
   max-width: 500px;
   width: 100%;
 }

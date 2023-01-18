@@ -21,6 +21,9 @@
 <script>
 export default {
   name: "Concerts",
+  metaInfo: {
+    title: "Koncerty | Funky Monx"
+  },
   props: {
     items: {
       type: Array

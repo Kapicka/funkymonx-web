@@ -1,12 +1,15 @@
 <template>
-  <button class="mx-button" @click="$emit('click')">
+  <button class="mx-button" v-bind:class="{'disabled':disabled}" @click="$emit('click')">
     <slot/>
   </button>
 </template>
 
 <script>
 export default {
-  name: "MxButton"
+  name: "MxButton",
+  props: {
+    disabled: {default: false}
+  }
 }
 </script>
 
@@ -24,6 +27,9 @@ export default {
   text-decoration: none;
   display: inline-block;
   cursor: pointer;
+}
+.disabled {
+  opacity: 0.4;
 }
 
 

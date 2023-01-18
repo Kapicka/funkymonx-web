@@ -49,6 +49,9 @@ import {music} from "@/data/store";
 
 export default {
   name: "Music",
+  metaInfo: {
+    title: "Hudba | Funky Monx"
+  },
   components: {AlbumInfo},
   items: {type: Array},
   methods: {

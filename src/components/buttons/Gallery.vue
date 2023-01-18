@@ -1,20 +1,20 @@
 <template>
     <div class="gallery">
-      <div class="top-panel">
-        <close-button class="close-button" @click="$emit('close')"></close-button>
+      <div class="gallery__top-panel">
+        <close-button class="gallery__close-button" @click="$emit('close')"></close-button>
       </div>
-      <div class="img-container">
-        <arrow-button class="arrow arrow-right" @click="nextImg()"/>
-        <arrow-button class="arrow arrow-left" @click="prevImg()"/>
-        <img class="img" v-if="currentImage" :alt=currentImage.alt :src="currentImage.src"
+      <div class="checkout__image-wrapper">
+        <arrow-button class="gallery__nav-arrow gallery__arrow-right" @click="nextImg()"/>
+        <arrow-button class="gallery__nav-arrow gallery__arrow-left" @click="prevImg()"/>
+        <img class="gallery__img" v-if="currentImage" :alt=currentImage.alt :src="currentImage.src"
              :srcset="currentImage.srcSet"/>
       </div>
     </div>
 </template>
 
 <script>
-import CloseButton from "@/components/CloseButton";
-import ArrowButton from "@/components/ArrowButton";
+import CloseButton from "@/components/buttons/CloseButton";
+import ArrowButton from "@/components/buttons/ArrowButton";
 import {fixed} from "@/data/store";
 
 export default {
@@ -78,25 +78,26 @@ export default {
 </script>
 
 <style scoped>
-@import "../assets/css/common.css";
-@import "../assets/css/animations.css";
+@import "../../assets/css/common.css";
+@import "../../assets/css/animations.css";
+@import "../../assets/css/theme.css";
 
-.img {
+.gallery__img {
   max-width: 1200px;
   max-height: 100vh;
   object-fit: contain;
 }
 
-.arrow-left {
+.gallery__arrow-left {
   transform: scale(-1);
   left: 20px;
 }
 
-.arrow-right {
+.gallery__arrow-right {
   right: 20px;
 }
 
-.arrow {
+.gallery__nav-arrow {
   position: absolute;
   top: 50%;
 }
@@ -105,6 +106,7 @@ export default {
   font-size: 30px;
   color: #ffbf00;
   position: absolute;
+  z-index: 3;
   top: 0;
   left: 0;
   width: 100vw;
@@ -112,7 +114,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.9);
 }
 
-.top-panel {
+.gallery__top-panel {
   top: 0px;
   left: 0px;
   position: fixed;
@@ -121,7 +123,7 @@ export default {
   justify-content: end;
 }
 
-.img-container {
+.checkout__image-wrapper {
   width: 100vw;
   height: 100vh;
   display: grid;

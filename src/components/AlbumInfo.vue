@@ -10,7 +10,7 @@
           <div :key="entry.link" v-for="entry in album.socials">
             <div class="a">
               <a :href="entry.link">
-                <img class="img" :src="getIcon(entry.key)"/>
+                <img class="gallery__img" :src="getIcon(entry.key)"/>
               </a>
             </div>
           </div>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import PlayButton from "@/components/PlayButton";
+import PlayButton from "@/components/buttons/PlayButton";
 
 export default {
   name: "PlayerModule",
@@ -111,6 +111,7 @@ export default {
   margin-top: 95px;
   margin-left: 125px;
   width: 50px;
+  cursor:pointer;
 }
 
 .album-title {

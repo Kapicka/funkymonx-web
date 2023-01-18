@@ -1,6 +1,6 @@
 <template>
   <div class="merch">
-    <modal @modal-close="setSelectedItem(undefined)" v-if="selectedItem">
+    <modal @close="setSelectedItem(undefined)" v-if="selectedItem">
       <checkout @order-completed="setSelectedItem(undefined)" class="checkout" :item="selectedItem"/>
     </modal>
     <div class="merch-items">
@@ -22,6 +22,11 @@ import Checkout from "@/components/Checkout";
 export default {
 
   name: "Merch",
+  metaInfo:{
+    title:'Merch | Funky Monx',
+   meta:[
+     { name: 'description', content: 'Merch kapely Funky Monx k zakoupení, placky, CD a jiné.' }   ]
+  },
   components: {Checkout, Modal, MerchItem},
   methods:{
     setSelectedItem(item){

@@ -1,8 +1,8 @@
 <template>
-<button @click="$emit('click')" class="close-button">
-  <div class="line line-1"></div>
-  <div class="line line-2"></div>
-</button>
+  <button @click="$emit('click')" class="close-button">
+    <div class="line line-1"></div>
+    <div class="line line-2"></div>
+  </button>
 </template>
 
 <script>
@@ -39,6 +39,7 @@ export default {
   background-color: transparent;
   cursor: pointer;
 }
+
 .close-button:hover .line {
   background-color: #ffbf00;
 }

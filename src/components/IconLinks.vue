@@ -3,7 +3,7 @@
     <li :aria-label="c.key" class="li" v-for="c in iconLinks" :key="c.key">
       <div class="a">
         <a :href="c.link">
-          <img class="img" :src="getSrc(c.key)"/>
+          <img class="gallery__img" :src="getSrc(c.key)"/>
         </a>
       </div>
     </li>

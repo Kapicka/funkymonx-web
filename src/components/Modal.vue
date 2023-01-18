@@ -1,8 +1,8 @@
 <template>
   <div class="modal">
     <div class="modal__wrapper">
-      <div class="close-panel">
-        <close-button @click="$emit('modal-close')" class="modal__close-panel-close"/>
+      <div v-if="closeButton" class="close-panel">
+        <close-button @click="$emit('close')" class="modal__close-panel-close"/>
       </div>
       <div class="modal__content"></div>
       <slot></slot>
@@ -11,10 +11,15 @@
 </template>
 <script>
 import {fixed} from "@/data/store";
-import CloseButton from "@/components/CloseButton";
+import CloseButton from "@/components/buttons/CloseButton";
 
 export default {
   name: "Modal",
+  props: {
+    closeButton: {
+      default: true,
+    }
+  },
   components: {CloseButton},
 
   data() {

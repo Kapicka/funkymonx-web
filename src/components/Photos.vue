@@ -2,7 +2,7 @@
   <section class="gallery fade-in">
     <gallery :img-index="imgIndex" @close="()=>{this.gallery=false}" v-if="gallery" :images="loadedImgs"/>
     <div class="photo_list">
-      <img class="img" v-bind:key="img.alt+i" v-for="(img,i) in loadedImgs" @click="openGallery(i)" loading="lazy"
+      <img class="gallery__img" v-bind:key="img.alt+i" v-for="(img,i) in loadedImgs" @click="openGallery(i)" loading="lazy"
            :srcset="img.srcSet"
            :src="loadedImgs.src"/>
     </div>
@@ -10,10 +10,13 @@
 </template>
 <script>
 
-import Gallery from "@/components/Gallery";
+import Gallery from "@/components/buttons/Gallery";
 
 export default {
   name: "Photos",
+  metaInfo:{
+    title:'Fotky | Funky Monx'
+  },
   components: {Gallery},
   data() {
     return {
@@ -54,7 +57,7 @@ export default {
 .gallery {
   width: 100%;
 }
-.img {
+.gallery__img {
   cursor: pointer;
 }
 .photo_list {

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import MxButton from "@/components/MxButton";
+import MxButton from "@/components/buttons/MxButton";
 
 export default {
   name: "MerchItem",
