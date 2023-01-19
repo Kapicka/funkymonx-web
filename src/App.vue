@@ -20,7 +20,9 @@
       </div>
     </div>
     <div class="overlay" v-bind:class="{ 'overlay--darken':overlay.visible, 'overlay--light':!overlay.visible }"/>
-<!--    <video ref="video" muted :src="getVideoSrc()" autoplay="autoplay" loop class="bg-video"/>-->
+    <video autoplay loop muted playsinline class="bg-video">
+      <source :src="getVideoSrc()" type="video/mp4">
+    </video>
     <!--  Modals-->
     <subscribe-dialogue @close="()=>{subscribeModal = false}" v-if="subscribeModal" />
   </div>
@@ -83,6 +85,9 @@ export default {
     changePage(page) {
       this.currentPage = page
     },
+    getVideoSrc() {
+      return require(`./assets/monx.mp4`)
+    }
   }
 }
 </script>

@@ -2,7 +2,6 @@
   <div class="contact fade-in">
     <div>
       <address class="contact__address">
-        <div>
           <div class="contact__address-item">
             <div>Telefon:&nbsp;</div>
             <div><a :href="`tel:${monxContact.phone}`">{{ monxContact.phone }}</a></div>
@@ -11,7 +10,6 @@
             <div>E-mail:&nbsp;</div>
             <div><a :href="`mailto:${monxContact.mail}`">{{ monxContact.mail }}</a></div>
           </div>
-        </div>
       </address>
 
       <h3 class="mt100 mt50-mobile">Napište zprávu</h3>
@@ -145,8 +143,12 @@ export default {
   .mt50-mobile {
     margin-top: 50px
   }
+  .contact--short {
+    padding:0;
+  }
 
   .contact__message-form {
+    flex-direction: column;
     display: flex;
     justify-items: center;
     text-align: center;
