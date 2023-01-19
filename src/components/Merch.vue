@@ -15,21 +15,21 @@
 <script>
 
 import MerchItem from "@/components/MerchItem";
-import {merchItems} from "../data/store";
+import {merchItems, preloaderData} from "../data/store";
 import Modal from "@/components/Modal";
 import Checkout from "@/components/Checkout";
 
 export default {
 
   name: "Merch",
-  metaInfo:{
-    title:'Merch | Funky Monx',
-   meta:[
-     { name: 'description', content: 'Merch kapely Funky Monx k zakoupení, placky, CD a jiné.' }   ]
+  metaInfo: {
+    title: 'Merch | Funky Monx',
+    meta: [
+      {name: 'description', content: 'Merch kapely Funky Monx k zakoupení, placky, CD a jiné.'}]
   },
   components: {Checkout, Modal, MerchItem},
-  methods:{
-    setSelectedItem(item){
+  methods: {
+    setSelectedItem(item) {
       console.log('wtf')
       this.selectedItem = item
     }
@@ -37,8 +37,14 @@ export default {
   data() {
     return {
       merchItems,
-      selectedItem:undefined
+      selectedItem: undefined
     }
+  },
+  beforeMount() {
+    preloaderData.visible = false
+  },
+  created() {
+    preloaderData.visible = false
   }
 }
 
@@ -46,12 +52,15 @@ export default {
 
 <style scoped>
 @import '../assets/css/common.css';
+
 .merch {
   width: 100%;
 }
+
 .merch-items__item {
   max-width: 300px;
 }
+
 .merch-items {
   gap: 30px;
   width: 100%;
@@ -59,11 +68,13 @@ export default {
   justify-content: space-evenly;
   grid-template-columns: repeat(auto-fit, 300px);
 }
+
 @media (max-width: 700px) {
   .merch-items__item {
     max-width: 100%;
     width: 100%;
   }
+
   .merch-items {
     display: block;
   }

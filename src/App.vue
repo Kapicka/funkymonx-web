@@ -25,17 +25,20 @@
     </video>
     <!--  Modals-->
     <subscribe-dialogue @close="()=>{subscribeModal = false}" v-if="subscribeModal" />
+    <preloader v-if="preloaderData.visible" :description="preloaderData.description"/>
+
   </div>
 </template>
 <script>
 
 import Navigation from "@/components/Nav";
-import {navigation, iconLinks, events, monxContact} from "@/data/store";
+import {navigation, iconLinks, events, monxContact, preloaderData} from "@/data/store";
 import {overlay, fixed} from "@/data/store";
 import IconLinks from "@/components/IconLinks";
 import ContactIcons from "@/components/ContactIcons";
 import TextButton from "@/components/buttons/TextButton";
 import SubscribeDialogue from "@/components/SubscribeDialogue";
+import Preloader from "@/components/Preloader";
 
 export default {
   name: 'App',
@@ -45,6 +48,7 @@ export default {
     ContactIcons,
     Navigation,
     IconLinks,
+    Preloader,
   },
   data() {
     return {
@@ -53,10 +57,14 @@ export default {
       monxContact,
       events,
       overlay,
+      preloaderData,
       fixed,
       currentPage: 'home',
-      subscribeModal: false
+      subscribeModal: false,
     }
+  },
+  created() {
+    preloaderData.visible = false
   },
   mounted() {
     if (this.$route.path === '/') {

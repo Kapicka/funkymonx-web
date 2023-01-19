@@ -2,14 +2,14 @@
   <div class="contact fade-in">
     <div>
       <address class="contact__address">
-          <div class="contact__address-item">
-            <div>Telefon:&nbsp;</div>
-            <div><a :href="`tel:${monxContact.phone}`">{{ monxContact.phone }}</a></div>
-          </div>
-          <div class="contact__address-item mt15">
-            <div>E-mail:&nbsp;</div>
-            <div><a :href="`mailto:${monxContact.mail}`">{{ monxContact.mail }}</a></div>
-          </div>
+        <div class="contact__address-item">
+          <div>Telefon:&nbsp;</div>
+          <div><a :href="`tel:${monxContact.phone}`">{{ monxContact.phone }}</a></div>
+        </div>
+        <div class="contact__address-item mt15">
+          <div>E-mail:&nbsp;</div>
+          <div><a :href="`mailto:${monxContact.mail}`">{{ monxContact.mail }}</a></div>
+        </div>
       </address>
 
       <h3 class="mt100 mt50-mobile">Napište zprávu</h3>
@@ -29,7 +29,7 @@
         </div>
       </form>
       <div class="mt50">
-        <mx-button  @click="sendMessage">Odeslat</mx-button>
+        <mx-button @click="sendMessage">Odeslat</mx-button>
       </div>
     </div>
     <!--    Modals-->
@@ -57,7 +57,7 @@
 <script>
 import MxButton from "@/components/buttons/MxButton";
 import emailjs from '@emailjs/browser';
-import {monxContact} from '../data/store'
+import {monxContact, preloaderData} from '../data/store'
 import Modal from "@/components/Modal";
 import TextInput from "@/components/form/TextInput";
 import TextareaInput from "@/components/form/TextareaInput";
@@ -90,10 +90,10 @@ export default {
     closeDialogue() {
       this.messageState = 'before-message-sent'
     },
-
     sendMessage() {
       const message = 'Zpráva:<br><br>' + this.message.replaceAll('\n', '<br>')
       const subject = `Zpráva od: ${this.contact}`
+      this.messageState = 'sending-message'
       emailjs.send(
           emailjsConfig.serviceId,
           emailjsConfig.templatesIds.generic,
@@ -106,7 +106,19 @@ export default {
         console.error(err)
       })
     },
-  }
+  },
+  watch: {
+    messageState() {
+      if (this.messageState === 'after-message-sent') {
+        preloaderData.visible = false
+        preloaderData.description = undefined
+      }
+      if (this.messageState === 'sending-message') {
+        preloaderData.visible = true
+        preloaderData.description = 'Odesílání zprávy...'
+      }
+    }
+  },
 }
 </script>
 
@@ -143,8 +155,9 @@ export default {
   .mt50-mobile {
     margin-top: 50px
   }
+
   .contact--short {
-    padding:0;
+    padding: 0;
   }
 
   .contact__message-form {

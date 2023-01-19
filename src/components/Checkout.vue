@@ -25,7 +25,7 @@
             <textarea-input
                 @input="(input)=>{this.note=input}"
                 ref="textarea"
-                model="note" class="mt30" placeholder="Poznámka" name="note" type="text"/>
+                :model="note" class="mt30" placeholder="Poznámka" type="text"/>
           </div>
         </form>
         <div class="checkout__submit-container mt30">
@@ -55,7 +55,7 @@
 <script>
 import MxButton from "@/components/buttons/MxButton";
 import emailjs from '@emailjs/browser';
-import {monxContact} from "@/data/store";
+import {monxContact, preloaderData} from "@/data/store";
 import TextInput from "@/components/form/TextInput";
 import TextareaInput from "@/components/form/TextareaInput";
 import {emailjsConfig} from "@/data/emailjs";
@@ -74,11 +74,12 @@ export default {
       return this.state === state
     },
     sendOrder() {
+      this.state = 'sending-order'
       emailjs.send(
           emailjsConfig.serviceId,
           emailjsConfig.templatesIds.order,
           {contact: this.contact, qt: this.qt, 'item_name': this.item.name, note: this.note},
-           emailjsConfig.publicKey)
+          emailjsConfig.publicKey)
           .then(() => {
             this.state = 'order-completed'
           }).catch((err) => {
@@ -98,6 +99,19 @@ export default {
     },
     getMerch(src) {
       return require(`../assets/merch/${src}`)
+    }
+  },
+  watch: {
+    state() {
+      if (this.state === 'order-completed' || this.state === 'error') {
+        preloaderData.visible = false
+        preloaderData.description = undefined
+
+      }
+      if (this.state === 'sending-order') {
+        preloaderData.visible = true
+        preloaderData.description = 'Odesílání objednávky...'
+      }
     }
   },
   data() {

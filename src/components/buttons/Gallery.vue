@@ -1,30 +1,31 @@
 <template>
-    <div class="gallery">
-      <div class="gallery__top-panel">
-        <close-button class="gallery__close-button" @click="$emit('close')"></close-button>
-      </div>
-      <div class="checkout__image-wrapper">
-        <arrow-button class="gallery__nav-arrow gallery__arrow-right" @click="nextImg()"/>
-        <arrow-button class="gallery__nav-arrow gallery__arrow-left" @click="prevImg()"/>
-        <img class="gallery__img" v-if="currentImage" :alt=currentImage.alt :src="currentImage.src"
-             :srcset="currentImage.srcSet"/>
-      </div>
+  <div class="gallery">
+    <div class="gallery__top-panel">
+      <close-button class="gallery__close-button" @click="$emit('close')"></close-button>
     </div>
+    <div class="checkout__image-wrapper">
+      <arrow-button class="gallery__nav-arrow gallery__arrow-right" @click="nextImg()"/>
+      <arrow-button class="gallery__nav-arrow gallery__arrow-left" @click="prevImg()"/>
+      <img class="gallery__img" v-if="currentImage" :alt=currentImage.alt :src="currentImage.src"
+           :srcset="currentImage.srcSet"/>
+    </div>
+  </div>
 </template>
 
 <script>
 import CloseButton from "@/components/buttons/CloseButton";
 import ArrowButton from "@/components/buttons/ArrowButton";
-import {fixed} from "@/data/store";
+import {fixed, preloaderData} from "@/data/store";
 
 export default {
   name: "Gallery",
-  components: { ArrowButton, CloseButton},
+  components: {ArrowButton, CloseButton},
   data() {
     return {
-      blabla:true,
+      blabla: true,
       fixed: fixed,
-      currentImage: undefined
+      currentImage: undefined,
+      preloaderData,
     }
   },
   props: {
@@ -39,12 +40,14 @@ export default {
     if (this.images.length) {
       this.currentImage = this.images[this.imgIndex]
     }
-
+    preloaderData.visible = true
   },
   mounted() {
     this.fixed.value = true
     window.addEventListener('keydown', this.handleKeyDown)
-
+  },
+  created() {
+    preloaderData.visible = false
   },
   beforeDestroy() {
     this.fixed.value = false
