@@ -26,12 +26,18 @@
       </div>
     </div>
     <div class="overlay" v-bind:class="{ 'overlay--darken':overlay.visible, 'overlay--light':!overlay.visible }"/>
-    <video ref="video" v-if="videoLoaded" autoplay="autoplay" loop="loop" muted="muted" playsinline class="bg-video fade-in">
+    <video
+        ref="video"
+        autoplay="autoplay"
+        loop="loop" muted="muted"
+        playsinline class="bg-video fade-in">
       <source :src="getVideoSrc()" type="video/mp4">
     </video>
     <!--  Modals-->
     <subscribe-dialogue @close="()=>{subscribeModal = false}" v-if="subscribeModal"/>
-    <preloader v-if="preloaderData.visible" :description="preloaderData.description"/>
+    <Transition>
+      <preloader v-if="preloaderData.visible" :description="preloaderData.description"/>
+    </Transition>
 
   </div>
 </template>
@@ -64,7 +70,6 @@ export default {
       events,
       overlay,
       preloaderData,
-      videoLoaded: false,
       fixed,
       currentPage: 'home',
       subscribeModal: false,
@@ -99,11 +104,7 @@ export default {
   },
   methods: {
     handleVideoLoaded() {
-      this.videoLoaded = true
-      setTimeout(() => {
-        preloaderData.visible = false
-      }, 500)
-
+      preloaderData.visible = false
     },
     changePage(page) {
       this.currentPage = page
@@ -117,6 +118,7 @@ export default {
 
 <style>
 @import "./assets/css/theme.css";
+@import "./assets/css/animations.css";
 @import "./assets/css/common.css";
 
 @font-face {
@@ -249,6 +251,15 @@ button {
   color: #ffbf00;
 }
 
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 
 @media (max-width: 500px) {
   .content {
