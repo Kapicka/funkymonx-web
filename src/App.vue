@@ -79,6 +79,7 @@ export default {
     const video = document.createElement("video");
     video.addEventListener('canplaythrough', this.handleVideoLoaded)
     video.src = this.getVideoSrc()
+    video.load()
   },
   updated() {
     if (this.$route.path === '/') {
