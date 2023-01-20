@@ -97,6 +97,7 @@ export default {
   methods: {
     handleVideoLoaded() {
       preloaderData.visible = false
+      this.$refs.video.play()
     },
     changePage(page) {
       this.currentPage = page

@@ -84,7 +84,6 @@ export default {
   },
   methods: {
     validateForm() {
-      console.log(!this.message.length || !this.contact.length)
       return !this.message.length || !this.contact.length
     },
     closeDialogue() {
