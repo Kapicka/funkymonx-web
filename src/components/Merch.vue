@@ -5,17 +5,17 @@
     </modal>
     <div class="merch-items">
       <merch-item @selected-item="setSelectedItem(item)"
-                  class="merch-items__item"
+                  class="merch-items__item fade-in"
                   v-bind:key="item.name"
                   :item="item"
-                  v-for="item in merchItems"/>
+                  v-for="item in loadedMerchItems"/>
     </div>
   </div>
 </template>
 <script>
 
 import MerchItem from "@/components/MerchItem";
-import {merchItems, preloaderData} from "../data/store";
+import {merchItems} from "../data/store";
 import Modal from "@/components/Modal";
 import Checkout from "@/components/Checkout";
 
@@ -28,26 +28,30 @@ export default {
       {name: 'description', content: 'Merch kapely Funky Monx k zakoupení, placky, CD a jiné.'}]
   },
   components: {Checkout, Modal, MerchItem},
-  methods: {
-    setSelectedItem(item) {
-      console.log('wtf')
-      this.selectedItem = item
-    }
-  },
   data() {
     return {
       merchItems,
-      selectedItem: undefined
+      selectedItem: undefined,
+      loadedMerchItems: []
     }
   },
   beforeMount() {
-    preloaderData.visible = false
+    merchItems.forEach(merchItem => {
+      const imageSrc = require(`../assets/merch/${merchItem.imageName}`)
+      const image = new Image
+      image.addEventListener('load', () => {
+        this.loadedMerchItems.push({...merchItem, imageSrc})
+      })
+      image.src = imageSrc
+    })
   },
-  created() {
-    preloaderData.visible = false
-  }
-}
+  methods: {
+    setSelectedItem(item) {
+      this.selectedItem = item
+    },
+  },
 
+}
 </script>
 
 <style scoped>

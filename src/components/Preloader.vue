@@ -23,7 +23,7 @@ export default {
 
 <style scoped>
 .preloader {
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.9);
   position: fixed;
   top: 0;
   left: 0;

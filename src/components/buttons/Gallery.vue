@@ -15,7 +15,7 @@
 <script>
 import CloseButton from "@/components/buttons/CloseButton";
 import ArrowButton from "@/components/buttons/ArrowButton";
-import {fixed, preloaderData} from "@/data/store";
+import {fixed } from "@/data/store";
 
 export default {
   name: "Gallery",
@@ -25,7 +25,6 @@ export default {
       blabla: true,
       fixed: fixed,
       currentImage: undefined,
-      preloaderData,
     }
   },
   props: {
@@ -40,14 +39,10 @@ export default {
     if (this.images.length) {
       this.currentImage = this.images[this.imgIndex]
     }
-    preloaderData.visible = true
   },
   mounted() {
     this.fixed.value = true
     window.addEventListener('keydown', this.handleKeyDown)
-  },
-  created() {
-    preloaderData.visible = false
   },
   beforeDestroy() {
     this.fixed.value = false

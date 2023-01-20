@@ -1,13 +1,19 @@
 <template>
   <div class="app" v-bind:class="{'fixed-app':fixed.value}">
     <header class="header">
-      <div  class="header__top-panel">
-        <text-button @close="()=>{subscribeModal=false}" @click="()=>{subscribeModal = true}" class="header__subscribe-button default-font">Sledujte nás!</text-button>
+      <div>
+        <div class="header__top-panel">
+          <text-button @close="()=>{subscribeModal=false}" @click="()=>{subscribeModal = true}"
+                       class="header__subscribe-button default-font">Sledujte nás!
+          </text-button>
+        </div>
+        <router-link  to="/" class="text-decoration--none">
+          <h1 @click="changePage('home')" class="header__title  ">
+            <span>FUNKY </span>
+            <span>MONX</span>
+          </h1>
+        </router-link>
       </div>
-      <h1 class="header__title">
-        <span>FUNKY </span>
-        <span>MONX</span>
-      </h1>
     </header>
     <div class="icon-links">
       <icon-links :iconLinks="iconLinks"/>
@@ -20,11 +26,11 @@
       </div>
     </div>
     <div class="overlay" v-bind:class="{ 'overlay--darken':overlay.visible, 'overlay--light':!overlay.visible }"/>
-    <video autoplay loop muted playsinline class="bg-video">
+    <video ref="video" autoplay loop muted playsinline class="bg-video">
       <source :src="getVideoSrc()" type="video/mp4">
     </video>
     <!--  Modals-->
-    <subscribe-dialogue @close="()=>{subscribeModal = false}" v-if="subscribeModal" />
+    <subscribe-dialogue @close="()=>{subscribeModal = false}" v-if="subscribeModal"/>
     <preloader v-if="preloaderData.visible" :description="preloaderData.description"/>
 
   </div>
@@ -63,15 +69,14 @@ export default {
       subscribeModal: false,
     }
   },
-  created() {
-    preloaderData.visible = false
-  },
   mounted() {
     if (this.$route.path === '/') {
       overlay.visible = false
     } else {
       overlay.visible = true
     }
+    this.$refs.video.addEventListener('canplaythrough',
+        () => this.handleVideoLoaded())
   },
   updated() {
     if (this.$route.path === '/') {
@@ -90,6 +95,9 @@ export default {
     }
   },
   methods: {
+    handleVideoLoaded() {
+      preloaderData.visible = false
+    },
     changePage(page) {
       this.currentPage = page
     },
@@ -102,6 +110,7 @@ export default {
 
 <style>
 @import "./assets/css/theme.css";
+@import "./assets/css/common.css";
 
 @font-face {
   font-family: "RubikDirt-Regular";
@@ -133,12 +142,18 @@ body {
 
 
 .content {
-  padding-top: 50px;
+  padding-top: 100px;
+  overflow: hidden;
   display: flex;
   justify-content: center;
 }
 
 .content_align {
+  width: calc(100vw - 200px);
+  justify-content: center;
+  display: flex;
+  overflow: scroll;
+  height: calc(100vh - 100px);
   width: calc(100vw - 200px);
   justify-content: center;
   display: flex;
@@ -196,6 +211,9 @@ button {
 }
 
 .header {
+  position: fixed;
+  width: 100vw;
+  overflow: hidden;
 
 }
 
@@ -215,12 +233,14 @@ button {
 }
 
 .header__title {
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
   font-size: 36px;
   padding-top: 0px;
   margin-top: 0px;
   color: #ffbf00;
 }
-
 
 
 @media (max-width: 500px) {

@@ -2,7 +2,7 @@ const merchItems = [
     {
         name: 'CD - Monx in blossoms',
         description: 'CD for your ass',
-        imageName: 'monx-in-blossoms-cd.jpeg',
+        imageName: 'monx-cover.png',
         qt: 3,
         price: 100,
     },

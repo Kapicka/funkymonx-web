@@ -4,7 +4,7 @@ const music = {
             key: 'monx-in-blossom',
             name: 'Monx in blossom',
             audio: 'itsgotpower.mp3',
-            cover: 'monx_in_blossom.png',
+            cover: 'monx-cover.png',
             socials: [
                 {
                     key: 'spotify',
@@ -20,7 +20,7 @@ const music = {
             key: 'monx-in-blossom-2',
             name: 'Monx in blossom',
             audio: 'itsgotpower.mp3',
-            cover: 'monx_in_blossom.png',
+            cover: 'monx-cover.png',
             socials: [
                 {
                     key: 'spotify',
@@ -38,7 +38,7 @@ const music = {
             key: 'monx-in-blossom-3',
             name: 'Monx in blossom',
             audio: 'itsgotpower.mp3',
-            cover: 'monx_in_blossom.png',
+            cover: 'monx-cover.png',
             socials: [
                 {
                     key: 'spotify',

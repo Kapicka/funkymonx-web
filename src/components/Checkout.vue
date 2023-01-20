@@ -74,7 +74,7 @@ export default {
       return this.state === state
     },
     sendOrder() {
-      this.state = 'sending-order'
+      this.setPreloader(true, "Odesílání objednávky...")
       emailjs.send(
           emailjsConfig.serviceId,
           emailjsConfig.templatesIds.order,
@@ -85,6 +85,8 @@ export default {
           }).catch((err) => {
         this.state = 'error'
         console.error(err)
+      }).finally(() => {
+        this.setPreloader(false, undefined)
       })
     },
     incrementQt() {
@@ -99,21 +101,13 @@ export default {
     },
     getMerch(src) {
       return require(`../assets/merch/${src}`)
+    },
+    setPreloader(value, description) {
+      preloaderData.visible = value
+      preloaderData.description = description
     }
   },
-  watch: {
-    state() {
-      if (this.state === 'order-completed' || this.state === 'error') {
-        preloaderData.visible = false
-        preloaderData.description = undefined
 
-      }
-      if (this.state === 'sending-order') {
-        preloaderData.visible = true
-        preloaderData.description = 'Odesílání objednávky...'
-      }
-    }
-  },
   data() {
     return {
       monxContact: monxContact,
