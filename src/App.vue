@@ -7,7 +7,7 @@
                        class="header__subscribe-button default-font">Sledujte nás!
           </text-button>
         </div>
-        <router-link  to="/" class="text-decoration--none">
+        <router-link to="/" class="text-decoration--none">
           <h1 @click="changePage('home')" class="header__title  ">
             <span>FUNKY </span>
             <span>MONX</span>
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="overlay" v-bind:class="{ 'overlay--darken':overlay.visible, 'overlay--light':!overlay.visible }"/>
-    <video ref="video" autoplay loop muted playsinline class="bg-video">
+    <video v-if="videoLoaded" ref="video" autoplay loop muted playsinline class="bg-video">
       <source :src="getVideoSrc()" type="video/mp4">
     </video>
     <!--  Modals-->
@@ -64,6 +64,7 @@ export default {
       events,
       overlay,
       preloaderData,
+      videoLoaded: false,
       fixed,
       currentPage: 'home',
       subscribeModal: false,
@@ -75,8 +76,9 @@ export default {
     } else {
       overlay.visible = true
     }
-    this.$refs.video.addEventListener('canplaythrough',
-        () => this.handleVideoLoaded())
+    const video = document.createElement("video");
+    video.addEventListener('canplaythrough', this.handleVideoLoaded)
+    video.src = this.getVideoSrc()
   },
   updated() {
     if (this.$route.path === '/') {
@@ -96,8 +98,8 @@ export default {
   },
   methods: {
     handleVideoLoaded() {
+      this.videoLoaded = true
       preloaderData.visible = false
-      this.$refs.video.play()
     },
     changePage(page) {
       this.currentPage = page
