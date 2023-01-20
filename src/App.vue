@@ -87,9 +87,6 @@ export default {
     } else {
       overlay.visible = true
     }
-    if (this.videoLoaded) {
-      this.$refs.video.play()
-    }
   },
   computed: {
     navItems() {
@@ -103,7 +100,10 @@ export default {
   methods: {
     handleVideoLoaded() {
       this.videoLoaded = true
-      preloaderData.visible = false
+      setTimeout(() => {
+        preloaderData.visible = false
+      }, 500)
+
     },
     changePage(page) {
       this.currentPage = page
