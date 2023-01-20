@@ -4,7 +4,7 @@
       <h2 class="center-xs"> Alba </h2>
       <div class="flex flex-wrap-wrap gap-30">
         <album-info
-            class="album-info"
+            class="album-info fade-in"
             v-for="album in loadedAlbums"
             @song-play="(key)=>onSongChange(key)"
             @song-stop="()=>onSongChange(undefined)"
@@ -91,6 +91,7 @@ export default {
 </script>
 
 <style scoped>
+@import "../assets/css/animations.css";
 
 .flex {
   display: flex;

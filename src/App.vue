@@ -168,6 +168,10 @@ body {
   display: flex;
 }
 
+.content_align::-webkit-scrollbar {
+  display: none;
+}
+
 .overlay {
   transition: 400ms opacity linear;
   position: fixed;
