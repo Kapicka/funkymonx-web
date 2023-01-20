@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="overlay" v-bind:class="{ 'overlay--darken':overlay.visible, 'overlay--light':!overlay.visible }"/>
-    <video v-if="videoLoaded" ref="video" autoplay loop muted playsinline class="bg-video">
+    <video ref="video" v-if="videoLoaded" autoplay="autoplay" loop="loop" muted="muted" playsinline class="bg-video fade-in">
       <source :src="getVideoSrc()" type="video/mp4">
     </video>
     <!--  Modals-->
@@ -86,6 +86,9 @@ export default {
       overlay.visible = false
     } else {
       overlay.visible = true
+    }
+    if (this.videoLoaded) {
+      this.$refs.video.play()
     }
   },
   computed: {
