@@ -46,7 +46,7 @@
 import TextInput from "@/components/form/TextInput";
 import Modal from "@/components/Modal";
 import MxButton from "@/components/buttons/MxButton";
-import {monxContact} from "@/data/contact";
+import {monxContact} from "../data/contact";
 import emailjs from "@emailjs/browser";
 import {emailjsConfig} from "@/data/emailjs";
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="music fade-in">
+  <div class="music fade-in ">
     <div v-if="music.albums.length">
       <h2 class="center-xs"> Alba </h2>
       <div class="flex flex-wrap-wrap gap-30">
@@ -18,7 +18,7 @@
       <h2> Singly a EP</h2>
       <div class="center-xs flex flex-wrap-wrap gap-30">
         <album-info
-            class="album-info"
+            class="album-info fade-in"
             v-for="(album) in loadedSingles"
             @song-play="(key)=>onSongChange(key)"
             @song-stop="()=>onSongChange(undefined)"

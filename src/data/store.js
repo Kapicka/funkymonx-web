@@ -1,7 +1,7 @@
 
 import {events} from "@/data/events";
 import {music} from "@/data/music";
-import {monxContact} from "@/data/contact";
+import {monxContact} from "./contact";
 import {iconLinks} from "@/data/iconLinks";
 import {navigation} from "@/data/navigation";
 import {photos} from "@/data/photos";

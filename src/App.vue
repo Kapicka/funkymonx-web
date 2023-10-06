@@ -43,7 +43,7 @@
 </template>
 <script>
 
-import Navigation from "@/components/Nav";
+import Navigation from "./components/Nav";
 import {navigation, iconLinks, events, monxContact, preloaderData} from "@/data/store";
 import {overlay, fixed} from "@/data/store";
 import IconLinks from "@/components/IconLinks";
@@ -275,7 +275,6 @@ button {
     left: 10px;
     width: 25px;
   }
-
 
   .navigation {
     right: calc((32px / 2) - (600px / 2) + 20px);
