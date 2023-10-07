@@ -2,6 +2,10 @@
   "name": "funkymonx-web",
   "version": "0.1.0",
   "private": true,
+  "engines" : {
+    "node" : "16.20.2"
+  },
+
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "yarn --ignore-engines;vue-cli-service build",
